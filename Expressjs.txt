@@ -1,0 +1,508 @@
+Express JS:
+
+It is a Node JS framework
+basic framework h/server side framework h
+
+JS k V8 engine ko c++ me dal k bnaya h
+JS ko server side me use krne k lye use hota h
+
+Node ko server side me use krna h to express use krte h
+
+Yha pr API bna skte h bht easily
+---
+
+new forlder bna lo
+then open vs code
+
+	npm init -y
+-
+
+new file bna lo
+
+index.js
+	npm install express --save
+
+agr express hatana ho to
+	npm uninstall express
+
+ab express js.com pr jao
+https://expressjs.com/en/starter/hello-world.html
+
+isse server bn jayga, if else bhi nhi likhna pdega
+
+	const express = require('express')
+	const app = express()
+	const port = 3000
+
+	app.get('/', (req, res) => {
+  	  res.send('Hello World!')
+	})
+
+	app.get('/about', (req, res) => {
+  	  res.send('Hello About!')
+	})
+
+	app.listen(port, () => {
+  	  console.log(`Example app listening at http://localhost:${port}`)
+	})
+
+ab local host on krke dikha do
+
+Run krne k lye - node index.js
+/
+/about
+
+agr kuch esa daloge jo nhi h
+/abc
+
+to 404 error dega
+network me, console k ps
+
+express ek framework h,
+tym bachata h bht
+------
+
+For api creation
+
+Thunder Client extension download krlo in vs code
+similar to Postman
+--------
+
+ab new file bna lo
+
+index.html
+
+! isse template bna lo
+	
+	<h1> I am html code
+
+ab waps index.js me ajao
+
+ek or paste krdo ye
+
+	app.get('/home', (req, res) => {
+  	  res.sendFile(path.join(__dirname, 'index.html'))
+	})
+
+__dirname = diractory name hota h ye
+
+ab top pr jao file me or ye llikh do 2nd line me
+	const path = require('path')
+
+----------
+
+ab nodemon install krlo
+
+	npm install -g nodemon
+
+ab run krne k lye
+	nodemon index.js
+
+ab open kro server
+	localhose:3000/home1
+-----
+
+ab bootstrap ko use krenge
+
+html file me 
+template file copy paste krdo
+
+navbar copy krlo
+---
+
+status code me bhj skte h
+
+	app.get('/home', (req, res) => {
+  	  res.sendFile(path.join(__dirname, 'index.html'))
+	  res.status(500)
+	})
+
+ye chiz network me jake dikh jaygi
+dikha k comment kr dena
+-------
+
+agr json format snd krna ho to
+	app.get('/home', (req, res) => {
+  	  // res.sendFile(path.join(__dirname, 'index.html'))
+	  // res.status(500)
+	  res.json({"bilal": 24})
+	})
+
+json bht use hoga
+---
+
+agr chaho to extension download kr skte ho
+chrome pr - JSON formatter
+---
+
+agr folder(static) ko serve krna h through express
+
+new folder bna lo
+public name ka
+	
+isme ek file bna lo 
+index.html
+! template
+	
+	<h4> lorem50
+---
+
+app.use ka use krenge ab
+
+ye ek middle ware hota h
+fn hote h jo request and response ki access ko rakhte h
+usko change bhi kr skte h
+--
+
+ab index.js me ajao
+
+4 const jo h file me unke bad likhna h
+
+	app.use(express.static(path.join(__dirname, "public")))
+
+ab server pr dikha do.
+
+local host bhi
+then /about bhi
+home1 bhi
+--
+
+agr khud k middle wares likhne h
+
+index.js me
+
+4 const k bad
+
+	const bilalMiddleware = (req, res, next) => {
+	  log(req)
+	  next()		# taki ye bad me run ho
+	}
+
+	app.use(bilalMiddleware)
+-
+
+ye apn use zada krte h
+create bht kam krte h
+
+dikha k comment kr dena h
+-------------
+
+ab agr chahte h jo link tab me apn likhe wo 
+apne dom me show ho jaye to
+
+	app.get('/hello/:name', (req, res) => {
+  	  res.send('Hello ' + req.params.name)
+	})
+
+isse ho jayga/ jo bhi url me likhoge wo ajayga main page pr
+localhost:3000/hello/bilal
+----------
+
+ab krdo sb bnd
+
+ab bnayenge ek new website
+
+folder bna lo
+blogExpress
+
+vs code bhi firse open krlo
+
+npm init
+
+package.json bn gai hogi
+ek folder bna lo templates name se
+index.html bna lo
+	lorem50 krdo
+-
+
+ek folder bna lo static name se
+css js ye sb staic folder me rakhenge
+
+ab index.js bna lo
+
+	const express = require('express')
+	const path = require('path')
+	const app = express()
+	const port = 3000
+
+	app.use(express.static(path.join(__dirname, "static")))
+
+	app.listen(port, () => {
+  	  console.log(`Example app listening at http://localhost:${port}`)
+	})
+-----
+
+ab router ko alag2 krenge
+
+ab ek folder bna lo
+routes name se
+
+isme ek file bna lo blog.js
+
+blog.js
+	const express = require('express')
+	const path = require('path')
+	const router = express.Router()
+
+	router.get('/', (req, res) =>{
+		res.sendFile(path.join(__dirname, '../templates/index.html'))
+	}
+
+	module.exports = router
+---
+
+index.js me ajao
+
+	app.use('/', require(path.join(__dirname, 'routes/blog.js')))	
+
+ab nodemon lana h
+	npm install -D nodemon
+
+	nodemon index.js
+----------------
+
+ab blog.js me ajao
+
+	router.get('/blog', (req, res) =>{
+		res.sendFile(path.join(__dirname, '../templates/index.html'))
+	}
+
+ab ek or folder bna lo
+data name se
+
+usme ek file bna lo blogs.js
+	blogs = [
+	   {
+		title: "How to get started 1",
+		content: "This is content 1",
+		slug: "started-first"
+		#heading jesa hota h, url me esa show hoga
+	   },
+	   {
+		title: "How to get started 2",
+		content: "This is content 2",
+		slug:"started-second"
+	   },
+	   {
+		title: "How to get started 3",
+		content: "This is content 3",
+		slug: "started-third"
+	   }
+	  ]	
+
+	module.exports = blogs;
+--
+
+ab blog.js me ajao
+	const blogs = require('../data/blogs')
+
+	router.get('/blog', (req, res) =>{
+	   blogs.forEach(e => {
+		log(e.title)
+	   });
+	   res.sendFile(path.join(__dirname, '../templates/index.html'))
+							blogHome.html
+	})
+----
+
+ab template folder me jake blogHome.html bna lo
+
+! 
+	h1 This is my site homepage
+
+ab local host pr krke dekh skte ho
+--------
+
+ab blog.js pr ajao
+log wali line ko change krna h
+
+	router.get('/blogpost/:slug', (req, res) =>{
+	  myBlog = blogs.filter(()=>{
+		return e.slug == req.params.slug
+	  })
+	   log(myBlog)
+	   res.sendFile(path.join(__dirname, '../templates/blogPage.html'))
+	})
+--
+
+templates me aake
+blogPage.html bna lo
+
+	h1 Here is blogPage 
+----------------
+
+Agr data ko save krna h to use 
+
+Mongoose - MongoDB se connect kr payenge
+
+moongose.com
+
+	const mongoose = require('mongoose');
+	mongoose.connect('mongodb://localhost:27017/test');
+
+	const Cat = mongoose.model('Cat', { name: String });
+
+	const kitty = new Cat({ name: 'Zildjian' });
+	kitty.save().then(() => console.log('meow'));
+-
+
+PUG:
+	Template engine hota h express k lye
+-----------
+
+Handle Bars: ye ek templating engine h jo JS templating krne me
+	use hota h.
+
+Express Handle Bars:
+
+install krne k lye
+npm install express-handlebars
+-
+
+template wale folder ko rename krdo
+views krdo
+	iske andar ek or folder bna lo
+	
+	layouts
+		iske andar ek file bna lo
+		main.handlebars
+-
+
+main.handlebars me ajao
+
+expres-handlebars.com
+copy kro deta	
+
+	<!DOCTYPE html>
+	<html>
+	<head>
+    		<meta charset="utf-8">
+    		<title>Example App</title>
+	</head>
+	<body>
+
+    		{{{body}}}
+
+	</body>
+	</html>
+-
+
+index.js me ajao
+
+	var exphbs  = require('express-handlebars');
+	//top pr
+
+	var app = express();
+	//port se phle
+
+	app.engine('handlebars', exphbs());
+	app.set('view engine', 'handlebars');
+	//ye dono port k bad
+-
+
+views folder me bna lo
+home.handlebars
+	
+	this is home.handlebars
+
+ab start krlo server
+
+nodemon index.js
+
+agr nhi chale to line no. 2 phle jo h wo comment krdo
+const express se upr wali
+-
+
+blog.js me ajao
+
+app.get('/', (req, res) =>{
+	//res.sendFile comment krdo
+    res.render('../home');
+});
+----------
+
+bootstrap lagana h to
+
+main.handlebars me ajao
+
+starter template paste krdo bootstrap ka
+
+body k andar
+	navbar copy paste krdo bootstrap se
+	href="/blog"
+
+	{{body}}
+ye daal do
+---
+
+blog.js pr ajao
+
+	router.get('/blog', (req, res) => {
+    		res.render('blogHome');
+	});
+-
+
+new file bna lo
+
+blogHome.handlebars
+-----------
+
+Built in helpers handlebars
+
+if-else bhi likh skte h
+-
+
+each in handleBars
+
+views k andar
+blogHome.handlebars pr ajao
+
+	{{#each blogs}}
+	<div class="blog">
+		<h2>{{this.title}}</h2>
+	</div>
+	{{/each}}
+-
+
+blog.js pr ajao
+	router.get('/blog', (req,res)=>{
+		res.render('blogHome', {
+			blogs: blogs	
+		});
+	});
+--
+
+blogHome.handlebars pr ajao
+
+	<div class="containers">
+	{{#each blogs}}
+	<div class="blog">
+		<a href="/blogpost/{{this.slug}}"><h2>{{this.title}}</h2>
+		</a>
+	</div>
+	{{/each}}
+	</div>
+-
+
+views folder me new file bna lo
+blogPage.handlebars
+
+	h2 {{title}}
+	p {{content}}
+-
+
+blog.js me ajao
+
+router.get('/blogpost/:slug', (req,res)=>{
+	myBlog = blogs.filter((e)=>{
+		return e.slug == req.params.slug;
+	});
+	res.render('blogPage', {
+		title: myBlog[0].title,
+		content: myBlog[0].content	
+	});
+});
+--------------------------------------
+
+Deployment
+
